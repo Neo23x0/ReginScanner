@@ -17,7 +17,10 @@
 #    based on .evt virtual filesystem detection by Paul Rascagneres, G DATA
 #    Reference: https://blog.gdatasoftware.com/uploads/media/regin-detect.py
 #
+# If you like ReginScanner you'll love THOR our full-featured APT Scanner
+# 
 # Florian Roth
+# BSK Consulting GmbH
 # November 2014
 # v0.3b
 # 
@@ -110,7 +113,7 @@ def printWelcome():
 	print "  "
 	print "  REGIN SCANNER"
 	print "  "
-	print "  by Florian Roth"
+	print "  by Florian Roth - BSK Consulting GmbH"
 	print "  (virtual filesystem detection based code by Paul Rascagneres G DATA)"
 	print "  Nov 2014"
 	print "  Version 0.3b"
