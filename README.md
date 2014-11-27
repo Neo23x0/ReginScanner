@@ -14,7 +14,7 @@ Detection is based on three detection methods:
 
  3. File System Scanner for Regin Virtual Filesystems
     based on .evt virtual filesystem detection by Paul Rascagneres, G DATA
-    Reference: https://blog.gdatasoftware.com/uploads/media/regin-detect.py
+    Reference: https://blog.gdatasoftware.com/blog/article/regin-an-old-but-sophisticated-cyber-espionage-toolkit-platform.html
 
 The Windows binary is compiled with PyInstaller 2.1 and should run as x86 application on both x86 and x64 based systems.
 
