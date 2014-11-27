@@ -3,13 +3,23 @@
 # -*- coding: utf-8 -*-
 #
 # Regin Scanner
-# File System Scanner for Regin Virtual Filesystems
-# based on .evt virtual filesystem detection by Paul Rascagneres, G DATA
-# Reference: https://blog.gdatasoftware.com/uploads/media/regin-detect.py
+#
+# Detection is based on three detection methods:
+#
+# 1. File Name IOC 
+#    Based on the reports published by Symantec and Kaspersky
+#
+# 2. Yara Ruleset
+#    Based on my rules published on pastebin:
+#    http://pastebin.com/0ZEWvjsC
+#
+# 3. File System Scanner for Regin Virtual Filesystems
+#    based on .evt virtual filesystem detection by Paul Rascagneres, G DATA
+#    Reference: https://blog.gdatasoftware.com/uploads/media/regin-detect.py
 #
 # Florian Roth
 # November 2014
-# v0.2.1b
+# v0.3b
 # 
 # DISCLAIMER - USE AT YOUR OWN RISK.
 
@@ -19,8 +29,9 @@ import argparse
 import scandir
 import traceback
 import binascii
+import yara
 
-EVIL_FILES = [ '\\usbclass.sys', '\\adpu160.sys', '\\msrdc64.dat', '\\msdcsvc.dat', '\\config\\SystemAudit.Evt', '\\config\\SecurityAudit.Evt', '\\config\\SystemLog.evt', '\\config\\ApplicationLog.evt', '\\ime\\imesc5\\dicts\\pintlgbs.imd', '\\ime\\imesc5\\dicts\\pintlgbp.imd', 'ystem32\\winhttpc.dll', 'ystem32\\wshnetc.dll', '\\SysWow64\\wshnetc.dll', 'ystem32\\svcstat.exe', 'ystem32\\svcsstat.exe', 'IME\\IMESC5\\DICTS\\PINTLGBP.IMD', 'ystem32\\wsharp.dll', 'ystem32\\wshnetc.dll', 'pchealth\\helpctr\\Database\\cdata.dat', 'pchealth\\helpctr\\Database\\cdata.edb', 'Windows\\Panther\\setup.etl.000', 'ystem32\\wbem\\repository\\INDEX2.DATA', 'ystem32\\wbem\\repository\\OBJECTS2.DATA', 'ystem32\\dnscache.dat', 'ystem32\\mregnx.dat', 'ystem32\\displn32.dat', 'ystem32\\dmdskwk.dat', 'ystem32\\nvwrsnu.dat', 'ystem32\\tapiscfg.dat', 'ystem32\\pciclass.sys', ]
+EVIL_FILES = [ '\\usbclass.sys', '\\adpu160.sys', '\\msrdc64.dat', '\\msdcsvc.dat', '\\config\\SystemAudit.Evt', '\\config\\SecurityAudit.Evt', '\\config\\SystemLog.evt', '\\config\\ApplicationLog.evt', '\\ime\\imesc5\\dicts\\pintlgbs.imd', '\\ime\\imesc5\\dicts\\pintlgbp.imd', 'ystem32\\winhttpc.dll', 'ystem32\\wshnetc.dll', '\\SysWow64\\wshnetc.dll', 'ystem32\\svcstat.exe', 'ystem32\\svcsstat.exe', 'IME\\IMESC5\\DICTS\\PINTLGBP.IMD', 'ystem32\\wsharp.dll', 'ystem32\\wshnetc.dll', 'pchealth\\helpctr\\Database\\cdata.dat', 'pchealth\\helpctr\\Database\\cdata.edb', 'Windows\\Panther\\setup.etl.000', 'ystem32\\wbem\\repository\\INDEX2.DATA', 'ystem32\\wbem\\repository\\OBJECTS2.DATA', 'ystem32\\dnscache.dat', 'ystem32\\mregnx.dat', 'ystem32\\displn32.dat', 'ystem32\\dmdskwk.dat', 'ystem32\\nvwrsnu.dat', 'ystem32\\tapiscfg.dat', 'ystem32\\pciclass.sys' ]
 
 def scan(path):
 
@@ -36,14 +47,28 @@ def scan(path):
 			if args.debug and not args.dots:
 				print "Scanning: %s" % filePath
 				
+			file_size = os.stat(filePath).st_size
+				
 			# File Name Checks -------------------------------------------------
 			for file in EVIL_FILES:
 				if file in filePath:
 					print "REGIN File Name MATCH: %s" % filePath
+					
+			# Yara Check -------------------------------------------------------
+			rules = yara.compile('regin_rules.yar')
+			if file_size < 500000:
+				try:
+					matches = rules.match(filePath)
+					if matches:
+						for match in matches:
+							print "REGIN Yara Rule MATCH: %s FILE: %s" % ( match, filePath)
+				except Exception, e:
+					if args.debug:
+						traceback.print_exc()
 				
 			# CRC Check --------------------------------------------------------
 			try:
-				if os.stat(filePath).st_size <= 11:
+				if file_size <= 11:
 					continue
 				
 				# Code from Paul Rascagneres
@@ -86,9 +111,9 @@ def printWelcome():
 	print "  REGIN SCANNER"
 	print "  "
 	print "  by Florian Roth"
-	print "  (based on .evt virtual filesystem detection by Paul Rascagneres G DATA)"
+	print "  (virtual filesystem detection based code by Paul Rascagneres G DATA)"
 	print "  Nov 2014"
-	print "  Version 0.2.1b"
+	print "  Version 0.3b"
 	print "  "
 	print "  DISCLAIMER - USE AT YOUR OWN RISK"
 	print "  "
