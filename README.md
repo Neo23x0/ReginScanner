@@ -9,6 +9,8 @@ to provide file system scanning for the virtual containers.
 Reference: 
 https://blog.gdatasoftware.com/uploads/media/regin-detect.py
 
+The Windows binary is compiled with PyInstaller 2.1 and should run as x86 application on both x86 and x64 based systems.
+
 Usage
 ============
 
