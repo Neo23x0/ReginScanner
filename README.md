@@ -1,13 +1,20 @@
 ReginScanner
 ============
 
-Scanner for Regin Virtual Filesystems
+Scanner for Regin Backdoor
 
-It is basically a wrapper for the code by Paul Rascagneres (G Data Software) 
-to provide file system scanning for the virtual containers.
+Detection is based on three detection methods:
 
-Reference: 
-https://blog.gdatasoftware.com/uploads/media/regin-detect.py
+ 1. File Name IOC 
+    Based on the reports published by Symantec and Kaspersky
+
+ 2. Yara Ruleset
+    Based on my rules published on pastebin:
+    http://pastebin.com/0ZEWvjsC
+
+ 3. File System Scanner for Regin Virtual Filesystems
+    based on .evt virtual filesystem detection by Paul Rascagneres, G DATA
+    Reference: https://blog.gdatasoftware.com/uploads/media/regin-detect.py
 
 The Windows binary is compiled with PyInstaller 2.1 and should run as x86 application on both x86 and x64 based systems.
 
