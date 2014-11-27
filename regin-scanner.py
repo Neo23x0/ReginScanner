@@ -39,6 +39,12 @@ EVIL_FILES = [ '\\usbclass.sys', '\\adpu160.sys', '\\msrdc64.dat', '\\msdcsvc.da
 def scan(path):
 
 	print "Scanning %s" % path
+	
+	# Compiling yara rules
+	if os.path.exists('regin_rules.yar'):
+		rules = yara.compile('regin_rules.yar')
+	else: 
+		print "Place the yara rule file 'regin_rules.yar' in the program folder to enable Yara scanning."
 
 	for root, directories, files in scandir.walk(path, onerror=walkError, followlinks=False):
 		for filename in files:
@@ -58,16 +64,16 @@ def scan(path):
 					print "REGIN File Name MATCH: %s" % filePath
 					
 			# Yara Check -------------------------------------------------------
-			rules = yara.compile('regin_rules.yar')
-			if file_size < 500000:
-				try:
-					matches = rules.match(filePath)
-					if matches:
-						for match in matches:
-							print "REGIN Yara Rule MATCH: %s FILE: %s" % ( match, filePath)
-				except Exception, e:
-					if args.debug:
-						traceback.print_exc()
+			if 'rules' in locals():
+				if file_size < 500000:
+					try:
+						matches = rules.match(filePath)
+						if matches:
+							for match in matches:
+								print "REGIN Yara Rule MATCH: %s FILE: %s" % ( match, filePath)
+					except Exception, e:
+						if args.debug:
+							traceback.print_exc()
 				
 			# CRC Check --------------------------------------------------------
 			try:
