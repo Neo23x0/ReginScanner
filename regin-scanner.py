@@ -30,6 +30,9 @@ def scan(path):
 			
 			if args.dots:
 				sys.stdout.write(".")
+				
+			if args.debug and not args.dots:
+				print "Scanning: %s" % filePath
 			
 			try:
 				if os.stat(filePath).st_size <= 11:
@@ -75,7 +78,6 @@ def printWelcome():
 	print "  REGIN SCANNER"
 	print "  "
 	print "  by Florian Roth"
-	print "  BSK Consulting GmbH"
 	print "  (based on .evt virtual filesystem detection by Paul Rascagneres G DATA)"
 	print "  Nov 2014"
 	print "  Version 0.1b"
