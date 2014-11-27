@@ -9,7 +9,7 @@
 #
 # Florian Roth
 # November 2014
-# v0.2b
+# v0.2.1b
 # 
 # DISCLAIMER - USE AT YOUR OWN RISK.
 
@@ -20,7 +20,7 @@ import scandir
 import traceback
 import binascii
 
-EVIL_FILES = [ '\\usbclass.sys', '\\adpu160.sys', '\\msrdc64.dat', '\\msdcsvc.dat', '\\config\\SystemAudit.Evt', '\\config\\SecurityAudit.Evt', '\\config\\SystemLog.evt', '\\config\\ApplicationLog.evt', '\\ime\\imesc5\\dicts\\pintlgbs.imd', '\\ime\\imesc5\\dicts\\pintlgbp.imd', 'ystem32\\winhttpc.dll', 'ystem32\\wshnetc.dll', '\\SysWow64\\wshnetc.dll', 'ystem32\\svcstat.exe', 'ystem32\\svcsstat.exe', 'IME\\IMESC5\\DICTS\\PINTLGBP.IMD', 'ystem32\\wsharp.dll', 'ystem32\\wshnetc.dll', 'pchealth\\helpctr\\Database\\cdata.dat', 'pchealth\\helpctr\\Database\\cdata.edb', 'Windows\\Panther\\setup.etl.000', 'ystem32\\wbem\\repository\\INDEX2.DATA', 'ystem32\\wbem\\repository\\OBJECTS2.DATA', 'ystem32\\dnscache.dat', 'ystem32\\mregnx.dat', 'ystem32\\displn32.dat', 'ystem32\\dmdskwk.dat', 'ystem32\\nvwrsnu.dat', 'ystem32\\tapiscfg.dat' ]
+EVIL_FILES = [ '\\usbclass.sys', '\\adpu160.sys', '\\msrdc64.dat', '\\msdcsvc.dat', '\\config\\SystemAudit.Evt', '\\config\\SecurityAudit.Evt', '\\config\\SystemLog.evt', '\\config\\ApplicationLog.evt', '\\ime\\imesc5\\dicts\\pintlgbs.imd', '\\ime\\imesc5\\dicts\\pintlgbp.imd', 'ystem32\\winhttpc.dll', 'ystem32\\wshnetc.dll', '\\SysWow64\\wshnetc.dll', 'ystem32\\svcstat.exe', 'ystem32\\svcsstat.exe', 'IME\\IMESC5\\DICTS\\PINTLGBP.IMD', 'ystem32\\wsharp.dll', 'ystem32\\wshnetc.dll', 'pchealth\\helpctr\\Database\\cdata.dat', 'pchealth\\helpctr\\Database\\cdata.edb', 'Windows\\Panther\\setup.etl.000', 'ystem32\\wbem\\repository\\INDEX2.DATA', 'ystem32\\wbem\\repository\\OBJECTS2.DATA', 'ystem32\\dnscache.dat', 'ystem32\\mregnx.dat', 'ystem32\\displn32.dat', 'ystem32\\dmdskwk.dat', 'ystem32\\nvwrsnu.dat', 'ystem32\\tapiscfg.dat', 'ystem32\\pciclass.sys', ]
 
 def scan(path):
 
@@ -88,7 +88,7 @@ def printWelcome():
 	print "  by Florian Roth"
 	print "  (based on .evt virtual filesystem detection by Paul Rascagneres G DATA)"
 	print "  Nov 2014"
-	print "  Version 0.2b"
+	print "  Version 0.2.1b"
 	print "  "
 	print "  DISCLAIMER - USE AT YOUR OWN RISK"
 	print "  "
