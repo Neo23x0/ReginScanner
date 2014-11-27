@@ -90,7 +90,7 @@ if __name__ == '__main__':
 	# Parse Arguments
 	parser = argparse.ArgumentParser(description='Regin Scanner')
 	parser.add_argument('-p', help='Path to scan', metavar='path', default='C:\\')
-	parser.add_argument('--dots', action='store_true', help='Print dot for every file to see the progress', default=False)
+	parser.add_argument('--dots', action='store_true', help='Print a dot for every scanned file to see the progress', default=False)
 	parser.add_argument('--debug', action='store_true', default=False, help='Debug output')
 	
 	args = parser.parse_args()
