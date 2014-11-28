@@ -22,7 +22,7 @@
 # Florian Roth
 # BSK Consulting GmbH
 # November 2014
-# v0.3b
+# v0.4b
 # 
 # DISCLAIMER - USE AT YOUR OWN RISK.
 
@@ -48,63 +48,68 @@ def scan(path):
 
 	for root, directories, files in scandir.walk(path, onerror=walkError, followlinks=False):
 		for filename in files:
-			filePath = os.path.join(root,filename)
-			
-			if args.dots:
-				sys.stdout.write(".")
-				
-			if args.debug and not args.dots:
-				print "Scanning: %s" % filePath
-				
-			file_size = os.stat(filePath).st_size
-				
-			# File Name Checks -------------------------------------------------
-			for file in EVIL_FILES:
-				if file in filePath:
-					print "REGIN File Name MATCH: %s" % filePath
-					
-			# Yara Check -------------------------------------------------------
-			if 'rules' in locals():
-				if file_size < 500000:
-					try:
-						matches = rules.match(filePath)
-						if matches:
-							for match in matches:
-								print "REGIN Yara Rule MATCH: %s FILE: %s" % ( match, filePath)
-					except Exception, e:
-						if args.debug:
-							traceback.print_exc()
-				
-			# CRC Check --------------------------------------------------------
 			try:
-				if file_size <= 11:
-					continue
+				filePath = os.path.join(root,filename)
 				
-				# Code from Paul Rascagneres
-				fp = open(filePath, 'r')
-				SectorSize=fp.read(2)[::-1]
-				MaxSectorCount=fp.read(2)[::-1]
-				MaxFileCount=fp.read(2)[::-1]
-				FileTagLength=fp.read(1)[::-1]
-				CRC32custom=fp.read(4)[::-1]
-				fp.close()
+				if args.dots:
+					sys.stdout.write(".")
+					
+				if args.debug and not args.dots:
+					print "Scanning: %s" % filePath
+					
+				file_size = os.stat(filePath).st_size
+					
+				# File Name Checks -------------------------------------------------
+				for file in EVIL_FILES:
+					if file in filePath:
+						print "REGIN File Name MATCH: %s" % filePath
+						
+				# Yara Check -------------------------------------------------------
+				if 'rules' in locals():
+					if file_size < 500000:
+						try:
+							matches = rules.match(filePath)
+							if matches:
+								for match in matches:
+									print "REGIN Yara Rule MATCH: %s FILE: %s" % ( match, filePath)
+						except Exception, e:
+							if args.debug:
+								traceback.print_exc()
+					
+				# CRC Check --------------------------------------------------------
+				try:
+					if file_size <= 11:
+						continue
+					
+					# Code from Paul Rascagneres
+					fp = open(filePath, 'r')
+					SectorSize=fp.read(2)[::-1]
+					MaxSectorCount=fp.read(2)[::-1]
+					MaxFileCount=fp.read(2)[::-1]
+					FileTagLength=fp.read(1)[::-1]
+					CRC32custom=fp.read(4)[::-1]
+					fp.close()
 
-				if args.debug:
-					print "SectorSize: ", SectorSize.encode('hex')
-					print "MaxSectorCount: ", MaxSectorCount.encode('hex')
-					print "MaxFileCount: ", MaxFileCount.encode('hex')
-					print "FileTagLength: ", FileTagLength.encode('hex')
-					print "CRC32custom: ", CRC32custom.encode('hex')
+					if args.debug:
+						print "SectorSize: ", SectorSize.encode('hex')
+						print "MaxSectorCount: ", MaxSectorCount.encode('hex')
+						print "MaxFileCount: ", MaxFileCount.encode('hex')
+						print "FileTagLength: ", FileTagLength.encode('hex')
+						print "CRC32custom: ", CRC32custom.encode('hex')
 
-				fp = open(filePath, 'r')
-				data=fp.read(0x7)
-				crc = binascii.crc32(data, 0x45)
-				crc2 = '%08x' % (crc & 0xffffffff)
-				if args.debug:
-					print "CRC2: ", crc2.encode('hex')
+					fp = open(filePath, 'r')
+					data=fp.read(0x7)
+					crc = binascii.crc32(data, 0x45)
+					crc2 = '%08x' % (crc & 0xffffffff)
+					if args.debug:
+						print "CRC2: ", crc2.encode('hex')
 
-				if CRC32custom.encode('hex') == crc2:
-					print filePath,"REGIN Virtual Filesystem MATCH: %s" % filePath
+					if CRC32custom.encode('hex') == crc2:
+						print filePath,"REGIN Virtual Filesystem MATCH: %s" % filePath
+				
+				except Exception, e:
+					if args.debug:
+						traceback.print_exc()
 			
 			except Exception, e:
 				if args.debug:
@@ -120,9 +125,8 @@ def printWelcome():
 	print "  REGIN SCANNER"
 	print "  "
 	print "  by Florian Roth - BSK Consulting GmbH"
-	print "  (virtual filesystem detection based code by Paul Rascagneres G DATA)"
 	print "  Nov 2014"
-	print "  Version 0.3b"
+	print "  Version 0.4b"
 	print "  "
 	print "  DISCLAIMER - USE AT YOUR OWN RISK"
 	print "  "
