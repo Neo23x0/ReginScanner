@@ -30,4 +30,9 @@ optional arguments:
   -p path     Path to scan
   --dots      Print a dot for every scanned file to see the progress
   --debug     Debug output
+  
+Screenshots
+============
 
+![ReginScannerScreen](/screens/ishot-141127-181510.png?raw=true "ReginScanner detecting file name IOC")
+![ReginScannerScreen](/screens/ishot-141127-191923.png?raw=true "ReginScanner detecting Yara IOC")
