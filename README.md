@@ -41,3 +41,15 @@ ReginScanner detecting file name IOC
 ReginScanner detecting Yara IOC
 
 ![ReginScannerScreen](/screens/ishot-141127-191923.png?raw=true "ReginScanner detecting Yara IOC")
+
+Contact
+============
+
+Profile on Company Homepage
+http://www.bsk-consulting.de/author/froth/
+
+Twitter
+@MalwrSignatures
+
+If you are interested in a corporate solution for APT scanning, check:
+http://www.bsk-consulting.de/apt-scanner-thor/
