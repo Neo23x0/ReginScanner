@@ -34,5 +34,10 @@ optional arguments:
 Screenshots
 ============
 
+ReginScanner detecting file name IOC
+
 ![ReginScannerScreen](/screens/ishot-141127-181510.png?raw=true "ReginScanner detecting file name IOC")
+
+ReginScanner detecting Yara IOC
+
 ![ReginScannerScreen](/screens/ishot-141127-191923.png?raw=true "ReginScanner detecting Yara IOC")
