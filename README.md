@@ -18,6 +18,13 @@ Detection is based on three detection methods:
 
 The Windows binary is compiled with PyInstaller 2.1 and should run as x86 application on both x86 and x64 based systems.
 
+Rule Base
+============
+
+The Yara rules published by Kaspersky are not bundled with this scanner. Extract them from the report and add them to the "regin_rules.yar" rule set to get better results. 
+(Hint: Check the double quote signs " after copy&paste if errors occur)
+https://securelist.com/files/2014/11/Kaspersky_Lab_whitepaper_Regin_platform_eng.pdf
+
 Usage
 ============
 
