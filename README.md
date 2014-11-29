@@ -44,15 +44,13 @@ optional arguments:
 Screenshots
 ============
 
-ReginScanner detecting file name IOC
+ReginScanner reports system as clean
 
 ![ReginScannerScreen](/screens/ishot-141129-190200.png?raw=true "ReginScanner detecting file name IOC")
 
-ReginScanner detecting Yara IOC
+ReginScanner with detections
 
 ![ReginScannerScreen](/screens/ishot-141129-190453.png?raw=true "ReginScanner detecting Yara IOC")
-
-![ReginScannerScreen](/screens/ishot-141129-190515.png?raw=true "ReginScanner detecting Yara IOC")
 
 Contact
 ============
