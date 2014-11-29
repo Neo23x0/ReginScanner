@@ -12,7 +12,10 @@ Detection is based on three detection methods:
     Based on my rules published on pastebin:
     http://pastebin.com/0ZEWvjsC
 
- 3. File System Scanner for Regin Virtual Filesystems
+ 3. SHA256 hash check
+    Compares known malicious SHA256 hashes with scanned files
+
+ 4. File System Scanner for Regin Virtual Filesystems
     based on .evt virtual filesystem detection by Paul Rascagneres, G DATA
     Reference: https://blog.gdatasoftware.com/blog/article/regin-an-old-but-sophisticated-cyber-espionage-toolkit-platform.html
 
@@ -43,11 +46,13 @@ Screenshots
 
 ReginScanner detecting file name IOC
 
-![ReginScannerScreen](/screens/ishot-141127-181510.png?raw=true "ReginScanner detecting file name IOC")
+![ReginScannerScreen](/screens/ishot-141129-190200.png?raw=true "ReginScanner detecting file name IOC")
 
 ReginScanner detecting Yara IOC
 
-![ReginScannerScreen](/screens/ishot-141127-191923.png?raw=true "ReginScanner detecting Yara IOC")
+![ReginScannerScreen](/screens/ishot-141129-190453.png?raw=true "ReginScanner detecting Yara IOC")
+
+![ReginScannerScreen](/screens/ishot-141129-190515.png?raw=true "ReginScanner detecting Yara IOC")
 
 Contact
 ============
