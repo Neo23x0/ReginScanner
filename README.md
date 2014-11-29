@@ -3,7 +3,7 @@ ReginScanner
 
 Scanner for Regin Backdoor
 
-Detection is based on three detection methods:
+Detection is based on four detection methods:
 
  1. File Name IOC 
     Based on the reports published by Symantec and Kaspersky
