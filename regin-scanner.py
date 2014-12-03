@@ -59,6 +59,22 @@ def scan(path):
 		print "Place the yara rule file 'regin_rules.yar' in the program folder to enable Yara scanning."
 
 	for root, directories, files in scandir.walk(path, followlinks=False):
+
+		# Skip symbolic links (powerful method for NTFS)
+		for dir in directories:
+
+			try:
+				f_info = win32file.GetFileAttributesEx(os.path.join(root, dir))
+				fileatt = 0
+				fileatt = int(f_info[0])
+				if fileatt == 9238:
+					directories.remove(dir)
+				else:
+					pass
+			except Exception, e:
+				directories.remove(dir)
+
+		# Loop through files
 		for filename in files:
 			try:
 				
