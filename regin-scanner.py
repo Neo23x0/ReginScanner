@@ -58,107 +58,108 @@ def scan(path):
 	else: 
 		print "Place the yara rule file 'regin_rules.yar' in the program folder to enable Yara scanning."
 
-	for root, directories, files in scandir.walk(path, followlinks=False):
+	for root, directories, files in scandir.walk(path, onerror=walkError, followlinks=False):
 
 		# Skip symbolic links (powerful method for NTFS)
-		for dir in directories:
+		#for dir in directories:
+        #
+			# try:
+		 	# 	f_info = win32file.GetFileAttributesEx(os.path.join(root, dir))
+		 	# 	fileatt = 0
+		 	# 	fileatt = int(f_info[0])
+		 	# 	if fileatt == 9238:
+		 	# 		directories.remove(dir)
+		 	# 	else:
+		 	# 		pass
+		 	# except Exception, e:
+		 	# 	directories.remove(dir)
 
-			try:
-				f_info = win32file.GetFileAttributesEx(os.path.join(root, dir))
-				fileatt = 0
-				fileatt = int(f_info[0])
-				if fileatt == 9238:
-					directories.remove(dir)
-				else:
-					pass
-			except Exception, e:
-				directories.remove(dir)
-
-		# Loop through files
-		for filename in files:
-			try:
-				
-				# Get the file and path
-				filePath = os.path.join(root,filename)
-				
-				# Counter
-				c += 1
-				
-				printProgress(c)
-				
-				if args.dots:
-					sys.stdout.write(".")
-					
-				if args.debug and not args.dots:
-					print "Scanning FILE: %s" % filePath
-					
-				file_size = os.stat(filePath).st_size
-				# print file_size
-					
-				# File Name Checks -------------------------------------------------
-				for file in EVIL_FILES:
-					if file in filePath:
-						print Fore.RED, "\bREGIN File Name MATCH: %s" % filePath, Fore.WHITE
-						compromised = True
-						
-				# Yara Check -------------------------------------------------------
-				if 'rules' in locals():
-					if file_size < 500000:
-						try:
-							matches = rules.match(filePath)
-							if matches:
-								for match in matches:
-									print Fore.RED, "\bREGIN Yara Rule MATCH: %s FILE: %s" % ( match, filePath), Fore.WHITE
-									compromised = True
-						except Exception, e:
-							if args.debug:
-								traceback.print_exc()
-								
-				# Hash Check -------------------------------------------------------
-				if file_size < 500000:
-					if sha256(filePath) in EVIL_HASHES:
-						print Fore.RED, "\bREGIN SHA256 Hash MATCH: %s FILE: %s" % ( sha256(filePath), filePath), Fore.WHITE
-						compromised = True
-					
-				# CRC Check --------------------------------------------------------
+			# Loop through files
+			for filename in files:
 				try:
-					if file_size <= 11:
-						continue
-					
-					# Code from Paul Rascagneres
-					fp = open(filePath, 'r')
-					SectorSize=fp.read(2)[::-1]
-					MaxSectorCount=fp.read(2)[::-1]
-					MaxFileCount=fp.read(2)[::-1]
-					FileTagLength=fp.read(1)[::-1]
-					CRC32custom=fp.read(4)[::-1]
-					fp.close()
 
-					if args.debug:
-						print "SectorSize: ", SectorSize.encode('hex')
-						print "MaxSectorCount: ", MaxSectorCount.encode('hex')
-						print "MaxFileCount: ", MaxFileCount.encode('hex')
-						print "FileTagLength: ", FileTagLength.encode('hex')
-						print "CRC32custom: ", CRC32custom.encode('hex')
+					# Get the file and path
+					filePath = os.path.join(root,filename)
 
-					fp = open(filePath, 'r')
-					data=fp.read(0x7)
-					crc = binascii.crc32(data, 0x45)
-					crc2 = '%08x' % (crc & 0xffffffff)
-					if args.debug:
-						print "CRC2: ", crc2.encode('hex')
+					# Print files
+					if args.printAll:
+						print "[SCANNING] %s" % filePath
 
-					if CRC32custom.encode('hex') == crc2:
-						print Fore.RED, "\bREGIN Virtual Filesystem MATCH: %s" % filePath, Fore.WHITE
-						compromised = True
-				
+					# Counter
+					c += 1
+
+					printProgress(c)
+
+					if args.dots:
+						sys.stdout.write(".")
+
+					file_size = os.stat(filePath).st_size
+					# print file_size
+
+					# File Name Checks -------------------------------------------------
+					for file in EVIL_FILES:
+						if file in filePath:
+							print Fore.RED, "\bREGIN File Name MATCH: %s" % filePath, Fore.WHITE
+							compromised = True
+
+					# Yara Check -------------------------------------------------------
+					if 'rules' in locals():
+						if file_size < 500000:
+							try:
+								matches = rules.match(filePath)
+								if matches:
+									for match in matches:
+										print Fore.RED, "\bREGIN Yara Rule MATCH: %s FILE: %s" % ( match, filePath), Fore.WHITE
+										compromised = True
+							except Exception, e:
+								if args.debug:
+									traceback.print_exc()
+
+					# Hash Check -------------------------------------------------------
+					if file_size < 500000:
+						if sha256(filePath) in EVIL_HASHES:
+							print Fore.RED, "\bREGIN SHA256 Hash MATCH: %s FILE: %s" % ( sha256(filePath), filePath), Fore.WHITE
+							compromised = True
+
+					# CRC Check --------------------------------------------------------
+					try:
+						if file_size <= 11:
+							continue
+
+						# Code from Paul Rascagneres
+						fp = open(filePath, 'r')
+						SectorSize=fp.read(2)[::-1]
+						MaxSectorCount=fp.read(2)[::-1]
+						MaxFileCount=fp.read(2)[::-1]
+						FileTagLength=fp.read(1)[::-1]
+						CRC32custom=fp.read(4)[::-1]
+						fp.close()
+
+						#if args.debug:
+						#	print "SectorSize: ", SectorSize.encode('hex')
+						#	print "MaxSectorCount: ", MaxSectorCount.encode('hex')
+						#	print "MaxFileCount: ", MaxFileCount.encode('hex')
+						#	print "FileTagLength: ", FileTagLength.encode('hex')
+						#	print "CRC32custom: ", CRC32custom.encode('hex')
+
+						fp = open(filePath, 'r')
+						data=fp.read(0x7)
+						crc = binascii.crc32(data, 0x45)
+						crc2 = '%08x' % (crc & 0xffffffff)
+						#if args.debug:
+						#	print "CRC2: ", crc2.encode('hex')
+
+						if CRC32custom.encode('hex') == crc2:
+							print Fore.RED, "\bREGIN Virtual Filesystem MATCH: %s" % filePath, Fore.WHITE
+							compromised = True
+
+					except Exception, e:
+						if args.debug:
+							traceback.print_exc()
+
 				except Exception, e:
 					if args.debug:
 						traceback.print_exc()
-			
-			except Exception, e:
-				if args.debug:
-					traceback.print_exc()
 	
 	# Return result
 	return compromised
@@ -169,7 +170,8 @@ def sha256(filePath):
 			file_data = file.read()
 		return hashlib.sha256(file_data).hexdigest()
 	except Exception, e:
-		traceback.print_exc()
+		if args.debug:
+			traceback.print_exc()
 		return 0
 					
 def walkError(err):
@@ -207,6 +209,7 @@ if __name__ == '__main__':
 	# Parse Arguments
 	parser = argparse.ArgumentParser(description='Regin Scanner')
 	parser.add_argument('-p', help='Path to scan', metavar='path', default='C:\\')
+	parser.add_argument('--printAll', action='store_true', help='Print all files that are scanned', default=False)
 	parser.add_argument('--dots', action='store_true', help='Print a dot for every scanned file to see the progress', default=False)
 	parser.add_argument('--debug', action='store_true', default=False, help='Debug output')
 	
