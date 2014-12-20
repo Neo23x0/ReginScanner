@@ -26,7 +26,8 @@ Requirements
 No requirements if you use the compiled EXE. 
 
 If you want to build it yourself:
-- yara : It's recommended to use the most recent version of the compiled packages for Windows (x86) - Download it from here: https://b161268c3bf5a87bc67309e7c870820f5f39f672.googledrive.com/host/0BznOMqZ9f3VUek8yN3VvSGdhRFU/
+
+- yara : It's recommended to use the most recent version of the compiled packages for Windows (x86) - Download it from here: http://goo.gl/PQjmsf
 - scandir : faster alternative to os.walk()
 - colorama : to color it up
 
