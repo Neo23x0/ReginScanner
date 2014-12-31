@@ -25,7 +25,7 @@
 # Florian Roth
 # BSK Consulting GmbH
 # December 2014
-# v0.7b
+# v0.7.1b
 # 
 # DISCLAIMER - USE AT YOUR OWN RISK.
 
@@ -202,7 +202,7 @@ def printWelcome():
 	print "  "
 	print "  by Florian Roth - BSK Consulting GmbH"
 	print "  Dec 2014"
-	print "  Version 0.7b"
+	print "  Version 0.7.1b"
 	print "  "
 	print "  DISCLAIMER - USE AT YOUR OWN RISK"
 	print "  "
@@ -237,4 +237,6 @@ if __name__ == '__main__':
 	else:
 		print Fore.GREEN+''+Back.BLACK
 		print "\bRESULT: SYSTEM SEEMS TO BE CLEAN. :)"
-		print Fore.WHITE+''+Back.BLACK		
+		print Fore.WHITE+''+Back.BLACK
+
+	raw_input("Press Enter to exit ...")
